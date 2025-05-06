@@ -1,34 +1,39 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { auth, db } from '../firebase/config';
-import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 
 const NotificationsScreen = () => {
   const [notifications, setNotifications] = useState([]);
   const navigation = useNavigation();
 
+  // Exemple de données locales pour les notifications
+  const notificationsData = [
+    {
+      id: '1',
+      message: 'You have a new friend request from John Doe',
+      createdAt: new Date(),
+      type: 'friendRequest',
+      senderId: 'user123',
+    },
+    {
+      id: '2',
+      message: 'Your playlist "Chill Vibes" was liked by Jane Doe',
+      createdAt: new Date(),
+      type: 'playlistLike',
+      senderId: 'user456',
+    },
+    {
+      id: '3',
+      message: 'You have a new message from Michael Smith',
+      createdAt: new Date(),
+      type: 'message',
+      senderId: 'user789',
+    },
+  ];
+
   useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return;
-
-    const notificationsRef = collection(db, 'notifications');
-    const q = query(
-      notificationsRef,
-      where('recipientId', '==', currentUser.uid),
-      orderBy('createdAt', 'desc')
-    );
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const notificationsList = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setNotifications(notificationsList);
-    });
-
-    return () => unsubscribe();
+    // Simuler la récupération de notifications
+    setNotifications(notificationsData);
   }, []);
 
   const renderNotification = ({ item }) => {
@@ -39,11 +44,12 @@ const NotificationsScreen = () => {
           if (item.type === 'friendRequest') {
             navigation.navigate('Profile', { userId: item.senderId });
           }
+          // Ajouter d'autres actions en fonction du type de notification
         }}
       >
         <Text style={styles.notificationText}>{item.message}</Text>
         <Text style={styles.timeText}>
-          {new Date(item.createdAt?.toDate()).toLocaleDateString()}
+          {item.createdAt.toLocaleDateString()}
         </Text>
       </TouchableOpacity>
     );

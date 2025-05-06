@@ -1,4 +1,5 @@
 {
   "name": "FriendShare",
-  "displayName": "FriendShare"
+  "displayName": "FriendShare",
+  "entryFile": "index.js" 
 }

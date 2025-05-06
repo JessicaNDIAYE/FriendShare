@@ -75,7 +75,7 @@ const App = () => {
           <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
           <Stack.Screen name="CreatePlaylist" component={CreatePlaylistScreen} />
           <Stack.Screen name="Notifications" component={NotificationsScreen} />
-          <Stack.Screen name="ServiceConnection" component={ServiceConnectionScreen} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

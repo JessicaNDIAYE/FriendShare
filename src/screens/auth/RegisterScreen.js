@@ -70,7 +70,7 @@ const RegisterScreen = ({ navigation }) => {
         <ScrollView contentContainerStyle={styles.scrollView}>
           <View style={styles.headerContainer}>
             <LottieView
-              source={require('../../assets/animations/music-notes.json')}
+              source={require('FriendShare/assets/animations/music-notes.json')}
               autoPlay
               loop
               style={styles.animation}

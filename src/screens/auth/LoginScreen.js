@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
       >
         <View style={styles.logoContainer}>
           <Image
-            source={require('../../assets/images/music-note.png')}
+            source={require('FriendShare/assets/images/music-note.png')}
             style={styles.logo}
           />
           <Text style={styles.appName}>PlaylistShare</Text>
@@ -90,7 +90,7 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.socialLoginContainer}>
             <TouchableOpacity style={[styles.socialButton, styles.spotifyButton]}>
               <Image
-                source={require('../../assets/images/spotify-icon.png')}
+                source={require('FriendShare/assets/images/spotify-icon.png')}
                 style={styles.socialIcon}
               />
               <Text style={styles.socialButtonText}>Spotify</Text>
@@ -98,7 +98,7 @@ const LoginScreen = ({ navigation }) => {
 
             <TouchableOpacity style={[styles.socialButton, styles.appleButton]}>
               <Image
-                source={require('../../assets/images/apple-music-icon.png')}
+                source={require('FriendShare/assets/images/apple-music-icon.png')}
                 style={styles.socialIcon}
               />
               <Text style={styles.socialButtonText}>Apple Music</Text>

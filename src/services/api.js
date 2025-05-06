@@ -1,7 +1,4 @@
-// src/services/api.js
-
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = 'https://api.playlistshare.com/api'; // Remplacer par votre URL d'API
 
@@ -13,53 +10,65 @@ const api = axios.create({
   },
 });
 
-// Intercepteur pour ajouter automatiquement le token d'authentification
-api.interceptors.request.use(
-  async (config) => {
-    const token = await AsyncStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+// Fonction pour récupérer les utilisateurs
+const getUsers = async () => {
+  try {
+    const response = await api.get('/users'); // Remplacer par le bon endpoint pour récupérer les utilisateurs
+    return response.data; // Retourner la liste des utilisateurs
+  } catch (error) {
+    console.error('Erreur lors de la récupération des utilisateurs:', error);
+    throw error;
   }
-);
+};
 
-// Intercepteur pour gérer les erreurs de token expiré
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      
-      try {
-        const refreshToken = await AsyncStorage.getItem('refreshToken');
-        const response = await axios.post(`${API_URL}/auth/refresh-token`, { refreshToken });
-        
-        const { token } = response.data;
-        await AsyncStorage.setItem('token', token);
-        
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        originalRequest.headers['Authorization'] = `Bearer ${token}`;
-        
-        return api(originalRequest);
-      } catch (err) {
-        // Si le refresh token échoue, rediriger vers la page de connexion
-        await AsyncStorage.removeItem('token');
-        await AsyncStorage.removeItem('refreshToken');
-        // Ici, vous devriez implémenter une logique pour rediriger vers la page de connexion
-        return Promise.reject(err);
-      }
-    }
-    
-    return Promise.reject(error);
+// Fonction pour obtenir un utilisateur par son ID
+const getUserById = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}`); // Remplacer par le bon endpoint
+    return response.data; // Retourner les données de l'utilisateur
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l\'utilisateur:', error);
+    throw error;
   }
-);
+};
 
-export default api;
+// Fonction pour créer un utilisateur (si tu as un formulaire d'inscription)
+const createUser = async (userData) => {
+  try {
+    const response = await api.post('/users', userData); // Remplacer par le bon endpoint
+    return response.data; // Retourner les données de l'utilisateur créé
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'utilisateur:', error);
+    throw error;
+  }
+};
+
+// Fonction pour modifier un utilisateur
+const updateUser = async (userId, userData) => {
+  try {
+    const response = await api.put(`/users/${userId}`, userData); // Remplacer par le bon endpoint
+    return response.data; // Retourner les données de l'utilisateur modifié
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
+    throw error;
+  }
+};
+
+// Fonction pour supprimer un utilisateur
+const deleteUser = async (userId) => {
+  try {
+    const response = await api.delete(`/users/${userId}`); // Remplacer par le bon endpoint
+    return response.data; // Retourner la réponse du serveur après suppression
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+    throw error;
+  }
+};
+
+export default {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+};

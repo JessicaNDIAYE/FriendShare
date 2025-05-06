@@ -1,22 +1,13 @@
-
-// src/components/PlaylistCard.js
-
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
 
 const PlaylistCard = ({ playlist, onPress }) => {
   const { name, description, songs, coverImage, sharedWith } = playlist;
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.8}>
-      <LinearGradient
-        colors={['rgba(255,107,107,0.8)', 'rgba(255,107,107,0.6)']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
-      >
+      <View style={styles.card}>
         <View style={styles.imageContainer}>
           {coverImage ? (
             <Image source={{ uri: coverImage }} style={styles.coverImage} />
@@ -26,29 +17,29 @@ const PlaylistCard = ({ playlist, onPress }) => {
             </View>
           )}
         </View>
-        
+
         <View style={styles.contentContainer}>
           <Text style={styles.name} numberOfLines={1}>{name}</Text>
-          
+
           {description ? (
             <Text style={styles.description} numberOfLines={2}>{description}</Text>
           ) : null}
-          
+
           <View style={styles.infoContainer}>
             <View style={styles.infoItem}>
-              <Icon name="music-note" type="material-community" color="#FFF" size={14} />
+              <Icon name="music-note" type="material-community" color="#333" size={14} />
               <Text style={styles.infoText}>{songs.length} titres</Text>
             </View>
-            
+
             {sharedWith && sharedWith.length > 0 ? (
               <View style={styles.infoItem}>
-                <Icon name="account-multiple" type="material-community" color="#FFF" size={14} />
+                <Icon name="account-multiple" type="material-community" color="#333" size={14} />
                 <Text style={styles.infoText}>Partagée avec {sharedWith.length}</Text>
               </View>
             ) : null}
           </View>
         </View>
-      </LinearGradient>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -65,9 +56,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     overflow: 'hidden',
   },
-  gradient: {
+  card: {
     flexDirection: 'row',
     padding: 12,
+    backgroundColor: '#FF6B6B', // Couleur unie pour la carte
   },
   imageContainer: {
     width: 80,

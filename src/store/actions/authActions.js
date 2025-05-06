@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../services/supabase';
 
 // Inscription
 export const register = (email, password) => async dispatch => {
